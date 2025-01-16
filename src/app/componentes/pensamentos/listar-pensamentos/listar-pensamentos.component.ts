@@ -1,24 +1,29 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { PensamentoComponent } from '../pensamento/pensamento.component';
+import { CommonModule } from '@angular/common';
+import { Pensamento } from '../pensamento/pensamento';
+import { PensamentoService } from '../../../../../backend/componentes/pensamentos/pensamento.service';
 
 @Component({
   selector: 'app-listar-pensamentos',
-  imports: [],
+  standalone: true,
+  imports: [PensamentoComponent, CommonModule],
   templateUrl: './listar-pensamentos.component.html',
   styleUrl: './listar-pensamentos.component.css',
 })
 export class ListarPensamentosComponent {
-  listarPensamentos = [];
-  listarPensamento: any;
+  [x: string]: any;
+  listaPensamentos: Pensamento[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private service: PensamentoService, private router: Router) {}
 
-  // ngOnInit(): void {
-  //   this.service.listar().subscribe((listarPensamento: any) => {
-  //     console.log(listarPensamento);
-  //     this.listarPensamento = listarPensamento;
-  //   });
-  // }
+  ngOnInit(): void {
+    this.service.listar().subscribe((listapensamentos) => {
+      this.listaPensamentos = listapensamentos;
+    });
+  }
+
   adicionarPensamento() {
     this.router.navigate(['/criarPensamento']);
   }
